@@ -17,7 +17,7 @@ body {
 }
 
 .app.layout-desktop {
-  max-width: 960px;
+  max-width: 100%;
 }
 
 .app.layout-desktop .app-header {
@@ -36,7 +36,7 @@ body {
 }
 
 .app.layout-desktop .details-nav {
-  max-width: 960px;
+  max-width: 100%;
 }
 
 /* Header */
