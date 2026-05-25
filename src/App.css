@@ -133,7 +133,7 @@ body {
 .train-card.staged {
   background: white;
   border-color: #e0e0e0;
-  color: #2e7d52;
+  color: #888;
 }
 
 .train-card.planned {
