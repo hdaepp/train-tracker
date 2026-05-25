@@ -80,7 +80,7 @@ function mergeTripData(schedulesJson, predictionsJson, vehiclesJson) {
   }
 }
 
-export function useMBTA() {
+export function useMBTA(stopId) {
   const [data, setData] = useState({ inbound: [], outbound: [] })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -89,8 +89,8 @@ export function useMBTA() {
   const refresh = useCallback(async () => {
     try {
       const [schedules, predictions, vehicles] = await Promise.all([
-        fetchSchedules(),
-        fetchPredictions(),
+        fetchSchedules(stopId),
+        fetchPredictions(stopId),
         fetchVehicles(),
       ])
       setData(mergeTripData(schedules, predictions, vehicles))
@@ -101,9 +101,11 @@ export function useMBTA() {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [stopId])
 
   useEffect(() => {
+    setLoading(true)
+    setData({ inbound: [], outbound: [] })
     refresh()
     const interval = setInterval(refresh, POLL_INTERVAL)
     return () => clearInterval(interval)

@@ -1,33 +1,55 @@
 const BASE = 'https://api-v3.mbta.com'
 const API_KEY = import.meta.env.VITE_MBTA_API_KEY
 
-export const STOP_ID = 'place-mgngl'
 export const ROUTE_ID = 'Green-E'
+export const DEFAULT_STOP_ID = 'place-mgngl'
 
-// Direction 0 = outbound (toward Heath St), Direction 1 = inbound (toward Medford/Tufts)
-// But from Magoun Square's perspective, "inbound" to the rider means toward downtown.
-// Green-E direction_id=0 goes toward the outer end (Medford/Tufts, away from downtown).
-// We'll label by MBTA direction names fetched at startup, defaulting to these.
-export const DIRECTION_NAMES = { 0: 'Outbound', 1: 'Inbound' }
+// Ordered Medford/Tufts → Heath Street (direction 0 = toward downtown/Heath St)
+export const STATIONS = [
+  { id: 'place-mdftf', name: 'Medford/Tufts' },
+  { id: 'place-balsq', name: 'Ball Square' },
+  { id: 'place-mgngl', name: 'Magoun Square' },
+  { id: 'place-gilmn', name: 'Gilman Square' },
+  { id: 'place-esomr', name: 'East Somerville' },
+  { id: 'place-lech',  name: 'Lechmere' },
+  { id: 'place-spmnl', name: 'Science Park/West End' },
+  { id: 'place-north', name: 'North Station' },
+  { id: 'place-haecl', name: 'Haymarket' },
+  { id: 'place-gover', name: 'Government Center' },
+  { id: 'place-pktrm', name: 'Park Street' },
+  { id: 'place-boyls', name: 'Boylston' },
+  { id: 'place-armnl', name: 'Arlington' },
+  { id: 'place-coecl', name: 'Copley' },
+  { id: 'place-prmnl', name: 'Prudential' },
+  { id: 'place-symcl', name: 'Symphony' },
+  { id: 'place-nuniv', name: 'Northeastern University' },
+  { id: 'place-mfa',   name: 'Museum of Fine Arts' },
+  { id: 'place-lngmd', name: 'Longwood Medical Area' },
+  { id: 'place-brmnl', name: 'Brigham Circle' },
+  { id: 'place-fenwd', name: 'Fenwood Road' },
+  { id: 'place-mispk', name: 'Mission Park' },
+  { id: 'place-rvrwy', name: 'Riverway' },
+  { id: 'place-bckhl', name: 'Back of the Hill' },
+  { id: 'place-hsmnl', name: 'Heath Street' },
+]
 
 function authParam() {
   return API_KEY ? `&api_key=${API_KEY}` : ''
 }
 
-export async function fetchPredictions() {
-  const url = `${BASE}/predictions?filter[stop]=${STOP_ID}&filter[route]=${ROUTE_ID}&include=trip,vehicle${authParam()}`
+export async function fetchPredictions(stopId) {
+  const url = `${BASE}/predictions?filter[stop]=${stopId}&filter[route]=${ROUTE_ID}&include=trip,vehicle${authParam()}`
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Predictions fetch failed: ${res.status}`)
   return res.json()
 }
 
-export async function fetchSchedules() {
+export async function fetchSchedules(stopId) {
   const now = new Date()
-  // Fetch schedules for the next 3 hours
   const minTime = now.toTimeString().slice(0, 8)
   const later = new Date(now.getTime() + 3 * 60 * 60 * 1000)
   const maxTime = later.toTimeString().slice(0, 8)
-  const url = `${BASE}/schedules?filter[stop]=${STOP_ID}&filter[route]=${ROUTE_ID}&filter[min_time]=${minTime}&filter[max_time]=${maxTime}&include=trip${authParam()}`
+  const url = `${BASE}/schedules?filter[stop]=${stopId}&filter[route]=${ROUTE_ID}&filter[min_time]=${minTime}&filter[max_time]=${maxTime}&include=trip${authParam()}`
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Schedules fetch failed: ${res.status}`)
   return res.json()
