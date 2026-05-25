@@ -62,6 +62,20 @@ export async function fetchVehicles() {
   return res.json()
 }
 
+export async function fetchTripSchedules(tripId) {
+  const url = `${BASE}/schedules?filter[trip]=${tripId}&include=stop${authParam()}`
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`Trip schedules fetch failed: ${res.status}`)
+  return res.json()
+}
+
+export async function fetchTripPredictions(tripId) {
+  const url = `${BASE}/predictions?filter[trip]=${tripId}&include=stop${authParam()}`
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`Trip predictions fetch failed: ${res.status}`)
+  return res.json()
+}
+
 export function parseTime(isoString) {
   if (!isoString) return null
   return new Date(isoString)

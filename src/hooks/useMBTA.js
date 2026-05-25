@@ -25,6 +25,7 @@ function mergeTripData(schedulesJson, predictionsJson, vehiclesJson) {
       vehicleByTrip[tripId] = {
         status: v.attributes.current_status,
         stopName: stopMap[stopId]?.attributes?.name || stopId,
+        stopId: stopId,
         label: v.attributes.label,
       }
     }

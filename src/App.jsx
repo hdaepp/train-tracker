@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useMBTA } from './hooks/useMBTA'
 import { useLayout } from './hooks/useLayout'
 import { useStation } from './hooks/useStation'
@@ -6,14 +6,38 @@ import ViewSwitcher from './components/ViewSwitcher'
 import HamburgerMenu from './components/HamburgerMenu'
 import MainView from './components/views/MainView'
 import DetailsView from './components/views/DetailsView'
+import TripDetailView from './components/views/TripDetailView'
 import { formatTime, STATIONS } from './utils/mbta'
 import './App.css'
 
 export default function App() {
   const [view, setView] = useState('main')
+  const [selectedTripId, setSelectedTripId] = useState(() => {
+    const params = new URLSearchParams(window.location.search)
+    return params.get('trip') || null
+  })
   const { stationId, setStation } = useStation()
   const { inbound, outbound, loading, error, lastUpdated, refresh } = useMBTA(stationId)
   const { layoutClass, pref, setPref } = useLayout()
+
+  useEffect(() => {
+    const url = new URL(window.location)
+    if (selectedTripId) {
+      url.searchParams.set('trip', selectedTripId)
+    } else {
+      url.searchParams.delete('trip')
+    }
+    history.replaceState(null, '', url)
+  }, [selectedTripId])
+
+  const allTrains = [...inbound, ...outbound]
+  const selectedTrain = selectedTripId
+    ? allTrains.find(t => t.id === selectedTripId) ?? null
+    : null
+
+  function handleBack() {
+    setSelectedTripId(null)
+  }
 
   return (
     <div className={`app ${layoutClass}`}>
@@ -40,17 +64,28 @@ export default function App() {
           Green Line E ·{' '}
           {lastUpdated ? `Updated ${formatTime(lastUpdated)}` : 'Loading…'}
         </div>
-        <ViewSwitcher activeView={view} onViewChange={setView} />
+        {!selectedTripId && <ViewSwitcher activeView={view} onViewChange={setView} />}
       </header>
 
       <main className="app-body">
         {error && <div className="error-banner">Error: {error}</div>}
-        {loading && !lastUpdated ? (
+        {selectedTripId ? (
+          <TripDetailView
+            tripId={selectedTripId}
+            train={selectedTrain}
+            selectedStopId={stationId}
+            onBack={handleBack}
+          />
+        ) : loading && !lastUpdated ? (
           <div className="loading">Loading…</div>
         ) : (
           <>
-            {view === 'main' && <MainView inbound={inbound} outbound={outbound} />}
-            {view === 'details' && <DetailsView inbound={inbound} outbound={outbound} />}
+            {view === 'main' && (
+              <MainView inbound={inbound} outbound={outbound} onSelect={setSelectedTripId} />
+            )}
+            {view === 'details' && (
+              <DetailsView inbound={inbound} outbound={outbound} onSelect={setSelectedTripId} />
+            )}
           </>
         )}
       </main>

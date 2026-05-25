@@ -28,7 +28,7 @@ function upcomingTrains(trains) {
     .slice(0, MAX_TRAINS)
 }
 
-function Section({ title, trains }) {
+function Section({ title, trains, onSelect }) {
   return (
     <div className="section">
       <h2 className="section-title">{title}</h2>
@@ -36,14 +36,14 @@ function Section({ title, trains }) {
         <p className="empty">No upcoming trains</p>
       ) : (
         trains.map((train, i) => (
-          <TrainCard key={train.id} train={train} isNext={i === 0} />
+          <TrainCard key={train.id} train={train} isNext={i === 0} onSelect={onSelect} />
         ))
       )}
     </div>
   )
 }
 
-export default function MainView({ inbound, outbound }) {
+export default function MainView({ inbound, outbound, onSelect }) {
   const [showInfo, setShowInfo] = useState(false)
 
   return (
@@ -79,8 +79,8 @@ export default function MainView({ inbound, outbound }) {
       )}
 
       <div className="sections-grid">
-        <Section title="Inbound → Downtown" trains={upcomingTrains(inbound)} />
-        <Section title="Outbound → Medford/Tufts" trains={upcomingTrains(outbound)} />
+        <Section title="Inbound → Downtown" trains={upcomingTrains(inbound)} onSelect={onSelect} />
+        <Section title="Outbound → Medford/Tufts" trains={upcomingTrains(outbound)} onSelect={onSelect} />
       </div>
     </div>
   )

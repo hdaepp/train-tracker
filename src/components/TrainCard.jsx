@@ -12,14 +12,20 @@ function statusLabel(train) {
   return 'Scheduled'
 }
 
-export default function TrainCard({ train, isNext }) {
+export default function TrainCard({ train, isNext, onSelect }) {
   const displayTime = train.predictedTime || train.scheduledTime
   const mins = minutesFromNow(displayTime)
   const minsLabel = mins === null ? '' : mins <= 0 ? 'now' : `${mins} min`
   const label = statusLabel(train)
 
   return (
-    <div className={`train-card ${cardClass(train)} ${isNext ? 'next' : ''}`}>
+    <div
+      className={`train-card ${cardClass(train)} ${isNext ? 'next' : ''} ${onSelect ? 'clickable' : ''}`}
+      onClick={onSelect ? () => onSelect(train.id) : undefined}
+      role={onSelect ? 'button' : undefined}
+      tabIndex={onSelect ? 0 : undefined}
+      onKeyDown={onSelect ? e => e.key === 'Enter' && onSelect(train.id) : undefined}
+    >
       <div className="train-card-time">
         <span className="time">{formatTime(displayTime)}</span>
         <span className="mins">{minsLabel}</span>

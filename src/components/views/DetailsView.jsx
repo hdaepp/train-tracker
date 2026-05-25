@@ -9,10 +9,16 @@ function deltaLabel(scheduledTime, predictedTime) {
   return { text: `+${diffMins} min`, cls: 'late' }
 }
 
-function DetailsRow({ train }) {
+function DetailsRow({ train, onSelect }) {
   const delta = deltaLabel(train.scheduledTime, train.predictedTime)
   return (
-    <div className="details-row">
+    <div
+      className={`details-row ${onSelect ? 'clickable' : ''}`}
+      onClick={onSelect ? () => onSelect(train.id) : undefined}
+      role={onSelect ? 'button' : undefined}
+      tabIndex={onSelect ? 0 : undefined}
+      onKeyDown={onSelect ? e => e.key === 'Enter' && onSelect(train.id) : undefined}
+    >
       <span className="time scheduled">{formatTime(train.scheduledTime)}</span>
       <span className="time predicted">{train.predictedTime ? formatTime(train.predictedTime) : '—'}</span>
       <span className={`delta ${delta.cls}`}>{delta.text}</span>
@@ -25,7 +31,7 @@ function DetailsRow({ train }) {
   )
 }
 
-function DetailsSection({ title, trains, nowRef }) {
+function DetailsSection({ title, trains, nowRef, onSelect }) {
   const dispatched = trains.findIndex(t => t.isDispatched)
   const staged = trains.findIndex(t => t.isStaged)
   const anchorIndex = dispatched !== -1 ? dispatched : staged !== -1 ? staged : 0
@@ -45,10 +51,10 @@ function DetailsSection({ title, trains, nowRef }) {
         trains.map((train, i) =>
           i === anchorIndex ? (
             <div key={train.id} ref={nowRef} className="now-anchor-row">
-              <DetailsRow train={train} />
+              <DetailsRow train={train} onSelect={onSelect} />
             </div>
           ) : (
-            <DetailsRow key={train.id} train={train} />
+            <DetailsRow key={train.id} train={train} onSelect={onSelect} />
           )
         )
       )}
@@ -56,7 +62,7 @@ function DetailsSection({ title, trains, nowRef }) {
   )
 }
 
-export default function DetailsView({ inbound, outbound }) {
+export default function DetailsView({ inbound, outbound, onSelect }) {
   const inboundRef = useRef(null)
   const outboundRef = useRef(null)
 
@@ -67,8 +73,8 @@ export default function DetailsView({ inbound, outbound }) {
   return (
     <div className="details-view">
       <div className="sections-grid">
-        <DetailsSection title="Inbound → Downtown" trains={inbound} nowRef={inboundRef} />
-        <DetailsSection title="Outbound → Medford/Tufts" trains={outbound} nowRef={outboundRef} />
+        <DetailsSection title="Inbound → Downtown" trains={inbound} nowRef={inboundRef} onSelect={onSelect} />
+        <DetailsSection title="Outbound → Medford/Tufts" trains={outbound} nowRef={outboundRef} onSelect={onSelect} />
       </div>
       <div className="details-nav">
         <button className="details-nav-btn" onClick={() => scrollTo(inboundRef)}>

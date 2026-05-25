@@ -450,6 +450,118 @@ body {
   scroll-margin-top: 120px;
 }
 
+/* Clickable rows */
+.train-card.clickable { cursor: pointer; }
+.train-card.clickable:hover { filter: brightness(0.97); }
+.details-row.clickable { cursor: pointer; }
+.details-row.clickable:hover { background: #f9f9f9; }
+
+/* Trip detail view */
+.trip-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0 16px;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.trip-back-btn {
+  background: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #00843d;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.trip-back-btn:hover { background: #edf5f0; }
+
+.trip-detail-title {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.trip-headsign {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.trip-sched-at-station {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 2px;
+}
+
+.trip-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+.trip-badge.dispatched { background: #edf5f0; color: #00843d; border: 1px solid #b8d9c5; }
+.trip-badge.staged { background: white; color: #888; border: 1px solid #e0e0e0; }
+.trip-badge.planned { background: #f0f0f0; color: #888; border: 1px solid #ddd; }
+
+.trip-stop-list {
+  font-size: 0.85rem;
+}
+
+.trip-stop-header {
+  display: grid;
+  grid-template-columns: 1fr 80px 80px 60px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #aaa;
+  padding: 4px 8px 6px;
+  border-bottom: 1px solid #eee;
+}
+
+.trip-stop-row {
+  display: grid;
+  grid-template-columns: 1fr 80px 80px 60px;
+  padding: 8px 8px;
+  border-bottom: 1px solid #f5f5f5;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.trip-stop-row.past { color: #bbb; }
+.trip-stop-row.current { font-weight: 600; background: #f9f9f9; }
+.trip-stop-row.selected { background: #edf5f0; }
+.trip-stop-row.selected.past { background: #f5f5f5; }
+
+.trip-stop-name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.trip-vehicle-marker {
+  color: #00843d;
+  font-size: 0.7rem;
+}
+
+.trip-selected-marker { color: #00843d; }
+
+.trip-stop-time { color: #555; }
+.trip-stop-row.past .trip-stop-time { color: #ccc; }
+.trip-stop-time.predicted { color: #333; }
+
+.trip-stop-delta { font-weight: 600; font-size: 0.8rem; }
+.trip-stop-delta.ontime { color: #00843d; }
+.trip-stop-delta.late { color: #c0392b; }
+.trip-stop-delta.neutral { color: #aaa; }
+
 /* Planned view */
 .view-note {
   font-size: 0.8rem;
