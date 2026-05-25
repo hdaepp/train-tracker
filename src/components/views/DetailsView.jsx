@@ -26,7 +26,9 @@ function DetailsRow({ train }) {
 }
 
 function DetailsSection({ title, trains, nowRef }) {
-  const anchorIndex = Math.max(0, trains.findIndex(t => t.isDispatched))
+  const dispatched = trains.findIndex(t => t.isDispatched)
+  const staged = trains.findIndex(t => t.isStaged)
+  const anchorIndex = dispatched !== -1 ? dispatched : staged !== -1 ? staged : 0
 
   return (
     <div className="section">
