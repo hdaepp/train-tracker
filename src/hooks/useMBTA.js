@@ -7,6 +7,7 @@ function mergeTripData(schedulesJson, predictionsJson, vehiclesJson) {
   const included = [
     ...(schedulesJson.included || []),
     ...(predictionsJson.included || []),
+    ...(vehiclesJson.included || []),
   ]
 
   const tripMap = {}
