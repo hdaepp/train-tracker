@@ -130,6 +130,12 @@ body {
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
+.train-card.staged {
+  background: #edf5f0;
+  border-color: #b8d9c5;
+  color: #444;
+}
+
 .train-card.planned {
   background: #f0f0f0;
   border-color: #ddd;
@@ -210,6 +216,7 @@ body {
 }
 
 .legend-item.dispatched::before { background: white; }
+.legend-item.staged::before { background: #edf5f0; border-color: #b8d9c5; }
 .legend-item.planned::before { background: #f0f0f0; }
 
 /* Planned view */

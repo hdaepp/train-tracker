@@ -53,12 +53,16 @@ function mergeTripData(schedulesJson, predictionsJson, vehiclesJson) {
       ? parseTime(prediction.attributes.departure_time || prediction.attributes.arrival_time)
       : null
 
+    const isDispatched = !!prediction
+    const isStaged = !isDispatched && !!vehicle
+
     trains.push({
       id: tripId,
       directionId: sched.attributes.direction_id,
       scheduledTime,
       predictedTime,
-      isDispatched: !!prediction,
+      isDispatched,
+      isStaged,
       vehicle,
       headsign: tripData?.attributes?.headsign || '',
     })

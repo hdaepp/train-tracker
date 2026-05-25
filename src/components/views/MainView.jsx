@@ -28,8 +28,9 @@ export default function MainView({ inbound, outbound }) {
   return (
     <div className="main-view">
       <div className="legend">
-        <span className="legend-item dispatched">Dispatched (live)</span>
-        <span className="legend-item planned">Scheduled only</span>
+        <span className="legend-item dispatched">Dispatched</span>
+        <span className="legend-item staged">Staged</span>
+        <span className="legend-item planned">Scheduled</span>
       </div>
       <Section title="Inbound → Downtown" trains={upcomingTrains(inbound)} />
       <Section title="Outbound → Medford/Tufts" trains={upcomingTrains(outbound)} />
