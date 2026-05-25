@@ -26,6 +26,8 @@ function DetailsRow({ train }) {
 }
 
 function DetailsSection({ title, trains, nowRef }) {
+  const anchorIndex = Math.max(0, trains.findIndex(t => t.isDispatched))
+
   return (
     <div className="section">
       <h2 className="section-title">{title}</h2>
@@ -38,10 +40,15 @@ function DetailsSection({ title, trains, nowRef }) {
       {trains.length === 0 ? (
         <p className="empty">No upcoming trains</p>
       ) : (
-        <>
-          <div ref={nowRef} className="now-anchor" />
-          {trains.map(train => <DetailsRow key={train.id} train={train} />)}
-        </>
+        trains.map((train, i) =>
+          i === anchorIndex ? (
+            <div key={train.id} ref={nowRef} className="now-anchor-row">
+              <DetailsRow train={train} />
+            </div>
+          ) : (
+            <DetailsRow key={train.id} train={train} />
+          )
+        )
       )}
     </div>
   )

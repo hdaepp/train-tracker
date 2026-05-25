@@ -326,9 +326,8 @@ body {
   border-color: #b8d9c5;
 }
 
-/* Anchor element placed just before the first train row in each section.
-   scroll-margin-top clears the sticky header (~115px) so it isn't obscured. */
-.now-anchor {
+/* Wrapper on the scroll-target row. scroll-margin-top clears the sticky header. */
+.now-anchor-row {
   scroll-margin-top: 120px;
 }
 
