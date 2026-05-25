@@ -194,9 +194,26 @@ body {
 /* Legend */
 .legend {
   display: flex;
+  align-items: center;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   font-size: 0.75rem;
+  background: none;
+  border: none;
+  padding: 4px 0;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.legend:hover .legend-hint { opacity: 1; }
+
+.legend-hint {
+  margin-left: auto;
+  font-size: 0.65rem;
+  color: #aaa;
+  opacity: 0.6;
+  transition: opacity 0.15s;
 }
 
 .legend-item {
@@ -218,6 +235,57 @@ body {
 .legend-item.dispatched::before { background: white; }
 .legend-item.staged::before { background: #edf5f0; border-color: #b8d9c5; }
 .legend-item.planned::before { background: #f0f0f0; }
+
+/* Legend popover */
+.legend-popover {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 16px;
+  font-size: 0.82rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.legend-popover-intro {
+  color: #555;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.legend-popover-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.legend-popover-row:last-child { margin-bottom: 0; }
+
+.legend-swatch {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+  margin-top: 3px;
+}
+
+.legend-swatch.dispatched { background: white; }
+.legend-swatch.staged { background: #edf5f0; border-color: #b8d9c5; }
+.legend-swatch.planned { background: #f0f0f0; }
+
+.legend-popover-row strong {
+  display: block;
+  margin-bottom: 2px;
+  color: #222;
+}
+
+.legend-popover-row p {
+  color: #666;
+  line-height: 1.45;
+  margin: 0;
+}
 
 /* Planned view */
 .view-note {
