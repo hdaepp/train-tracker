@@ -125,14 +125,14 @@ body {
 }
 
 .train-card.dispatched {
-  background: white;
-  border-color: #e0e0e0;
+  background: #edf5f0;
+  border-color: #b8d9c5;
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
 .train-card.staged {
-  background: #edf5f0;
-  border-color: #b8d9c5;
+  background: white;
+  border-color: #e0e0e0;
   color: #2e7d52;
 }
 
@@ -232,8 +232,8 @@ body {
   border: 1px solid #ddd;
 }
 
-.legend-item.dispatched::before { background: white; }
-.legend-item.staged::before { background: #edf5f0; border-color: #b8d9c5; }
+.legend-item.dispatched::before { background: #edf5f0; border-color: #b8d9c5; }
+.legend-item.staged::before { background: white; }
 .legend-item.planned::before { background: #f0f0f0; }
 
 /* Legend popover */
@@ -271,8 +271,8 @@ body {
   margin-top: 3px;
 }
 
-.legend-swatch.dispatched { background: white; }
-.legend-swatch.staged { background: #edf5f0; border-color: #b8d9c5; }
+.legend-swatch.dispatched { background: #edf5f0; border-color: #b8d9c5; }
+.legend-swatch.staged { background: white; }
 .legend-swatch.planned { background: #f0f0f0; }
 
 .legend-popover-row strong {
