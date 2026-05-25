@@ -287,6 +287,31 @@ body {
   margin: 0;
 }
 
+/* Details nav */
+.details-nav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.details-nav-btn {
+  flex: 1;
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #00843d;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.details-nav-btn:hover {
+  background: #edf5f0;
+  border-color: #b8d9c5;
+}
+
 /* Planned view */
 .view-note {
   font-size: 0.8rem;

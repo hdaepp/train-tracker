@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { formatTime } from '../../utils/mbta'
 
 function deltaLabel(scheduledTime, predictedTime) {
@@ -24,9 +25,9 @@ function DetailsRow({ train }) {
   )
 }
 
-function DetailsSection({ title, trains }) {
+function DetailsSection({ title, trains, sectionRef }) {
   return (
-    <div className="section">
+    <div className="section" ref={sectionRef}>
       <h2 className="section-title">{title}</h2>
       <div className="details-header">
         <span>Scheduled</span>
@@ -43,12 +44,26 @@ function DetailsSection({ title, trains }) {
   )
 }
 
+function scrollTo(ref) {
+  ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
 export default function DetailsView({ inbound, outbound }) {
+  const inboundRef = useRef(null)
+  const outboundRef = useRef(null)
+
   return (
     <div className="details-view">
-      <p className="view-note">How well is service running right now?</p>
-      <DetailsSection title="Inbound → Downtown" trains={inbound} />
-      <DetailsSection title="Outbound → Medford/Tufts" trains={outbound} />
+      <div className="details-nav">
+        <button className="details-nav-btn" onClick={() => scrollTo(inboundRef)}>
+          ↑ Inbound now
+        </button>
+        <button className="details-nav-btn" onClick={() => scrollTo(outboundRef)}>
+          ↓ Outbound now
+        </button>
+      </div>
+      <DetailsSection title="Inbound → Downtown" trains={inbound} sectionRef={inboundRef} />
+      <DetailsSection title="Outbound → Medford/Tufts" trains={outbound} sectionRef={outboundRef} />
     </div>
   )
 }
