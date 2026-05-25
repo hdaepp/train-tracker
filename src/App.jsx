@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useMBTA } from './hooks/useMBTA'
+import { useLayout } from './hooks/useLayout'
 import ViewSwitcher from './components/ViewSwitcher'
+import HamburgerMenu from './components/HamburgerMenu'
 import MainView from './components/views/MainView'
 import DetailsView from './components/views/DetailsView'
 import { formatTime } from './utils/mbta'
@@ -9,13 +11,17 @@ import './App.css'
 export default function App() {
   const [view, setView] = useState('main')
   const { inbound, outbound, loading, error, lastUpdated, refresh } = useMBTA()
+  const { layoutClass, pref, setPref } = useLayout()
 
   return (
-    <div className="app">
+    <div className={`app ${layoutClass}`}>
       <header className="app-header">
         <div className="header-top">
           <h1>Magoun Square</h1>
-          <button className="refresh-btn" onClick={refresh} title="Refresh">↻</button>
+          <div className="header-actions">
+            <button className="refresh-btn" onClick={refresh} title="Refresh">↻</button>
+            <HamburgerMenu pref={pref} setPref={setPref} />
+          </div>
         </div>
         <div className="header-sub">
           Green Line E ·{' '}

@@ -16,6 +16,29 @@ body {
   min-height: 100vh;
 }
 
+.app.layout-desktop {
+  max-width: 960px;
+}
+
+.app.layout-desktop .app-header {
+  padding: 20px 24px 0;
+}
+
+.app.layout-desktop .app-body {
+  padding: 20px 24px;
+}
+
+.app.layout-desktop .sections-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.app.layout-desktop .details-nav {
+  max-width: 960px;
+}
+
 /* Header */
 .app-header {
   background: #00843d;
@@ -37,6 +60,12 @@ body {
   font-weight: 700;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .refresh-btn {
   background: none;
   border: none;
@@ -48,6 +77,77 @@ body {
 }
 
 .refresh-btn:hover { opacity: 1; }
+
+/* Hamburger menu */
+.hamburger-menu {
+  position: relative;
+}
+
+.hamburger-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  opacity: 0.85;
+  line-height: 1;
+}
+
+.hamburger-btn:hover { opacity: 1; }
+
+.hamburger-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  min-width: 180px;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.hamburger-section-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #aaa;
+  padding: 10px 14px 6px;
+}
+
+.hamburger-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 8px 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.1s;
+}
+
+.hamburger-option:hover { background: #f5f5f5; }
+
+.hamburger-option.active { background: #edf5f0; }
+
+.option-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.hamburger-option.active .option-label { color: #00843d; }
+
+.option-desc {
+  font-size: 0.72rem;
+  color: #aaa;
+  margin-top: 1px;
+}
 
 .header-sub {
   font-size: 0.78rem;

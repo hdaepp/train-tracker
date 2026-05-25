@@ -78,8 +78,10 @@ export default function MainView({ inbound, outbound }) {
         </div>
       )}
 
-      <Section title="Inbound → Downtown" trains={upcomingTrains(inbound)} />
-      <Section title="Outbound → Medford/Tufts" trains={upcomingTrains(outbound)} />
+      <div className="sections-grid">
+        <Section title="Inbound → Downtown" trains={upcomingTrains(inbound)} />
+        <Section title="Outbound → Medford/Tufts" trains={upcomingTrains(outbound)} />
+      </div>
     </div>
   )
 }

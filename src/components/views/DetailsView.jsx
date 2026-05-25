@@ -66,8 +66,10 @@ export default function DetailsView({ inbound, outbound }) {
 
   return (
     <div className="details-view">
-      <DetailsSection title="Inbound → Downtown" trains={inbound} nowRef={inboundRef} />
-      <DetailsSection title="Outbound → Medford/Tufts" trains={outbound} nowRef={outboundRef} />
+      <div className="sections-grid">
+        <DetailsSection title="Inbound → Downtown" trains={inbound} nowRef={inboundRef} />
+        <DetailsSection title="Outbound → Medford/Tufts" trains={outbound} nowRef={outboundRef} />
+      </div>
       <div className="details-nav">
         <button className="details-nav-btn" onClick={() => scrollTo(inboundRef)}>
           ↑ Inbound now
