@@ -27,6 +27,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - run: npm run test:run
       - run: npm run build
         env:
           VITE_MBTA_API_KEY: ${{ secrets.VITE_MBTA_API_KEY }}
