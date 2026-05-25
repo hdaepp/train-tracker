@@ -25,9 +25,9 @@ function DetailsRow({ train }) {
   )
 }
 
-function DetailsSection({ title, trains, sectionRef }) {
+function DetailsSection({ title, trains, nowRef }) {
   return (
-    <div className="section" ref={sectionRef}>
+    <div className="section">
       <h2 className="section-title">{title}</h2>
       <div className="details-header">
         <span>Scheduled</span>
@@ -38,22 +38,27 @@ function DetailsSection({ title, trains, sectionRef }) {
       {trains.length === 0 ? (
         <p className="empty">No upcoming trains</p>
       ) : (
-        trains.map(train => <DetailsRow key={train.id} train={train} />)
+        <>
+          <div ref={nowRef} className="now-anchor" />
+          {trains.map(train => <DetailsRow key={train.id} train={train} />)}
+        </>
       )}
     </div>
   )
-}
-
-function scrollTo(ref) {
-  ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
 export default function DetailsView({ inbound, outbound }) {
   const inboundRef = useRef(null)
   const outboundRef = useRef(null)
 
+  function scrollTo(ref) {
+    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
     <div className="details-view">
+      <DetailsSection title="Inbound → Downtown" trains={inbound} nowRef={inboundRef} />
+      <DetailsSection title="Outbound → Medford/Tufts" trains={outbound} nowRef={outboundRef} />
       <div className="details-nav">
         <button className="details-nav-btn" onClick={() => scrollTo(inboundRef)}>
           ↑ Inbound now
@@ -62,8 +67,6 @@ export default function DetailsView({ inbound, outbound }) {
           ↓ Outbound now
         </button>
       </div>
-      <DetailsSection title="Inbound → Downtown" trains={inbound} sectionRef={inboundRef} />
-      <DetailsSection title="Outbound → Medford/Tufts" trains={outbound} sectionRef={outboundRef} />
     </div>
   )
 }

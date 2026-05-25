@@ -287,11 +287,25 @@ body {
   margin: 0;
 }
 
-/* Details nav */
+/* Details nav — fixed to bottom of screen */
+.details-view {
+  padding-bottom: 72px;
+}
+
 .details-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
   display: flex;
   gap: 8px;
-  margin-bottom: 16px;
+  padding: 10px 16px 14px;
+  background: rgba(245, 245, 245, 0.95);
+  backdrop-filter: blur(4px);
+  border-top: 1px solid #e0e0e0;
+  z-index: 5;
 }
 
 .details-nav-btn {
@@ -310,6 +324,12 @@ body {
 .details-nav-btn:hover {
   background: #edf5f0;
   border-color: #b8d9c5;
+}
+
+/* Anchor element placed just before the first train row in each section.
+   scroll-margin-top clears the sticky header (~115px) so it isn't obscured. */
+.now-anchor {
+  scroll-margin-top: 120px;
 }
 
 /* Planned view */
