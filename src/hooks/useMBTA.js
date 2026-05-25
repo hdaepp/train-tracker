@@ -70,8 +70,8 @@ function mergeTripData(schedulesJson, predictionsJson, vehiclesJson) {
   })
 
   return {
-    inbound: trains.filter(t => t.directionId === 1),
-    outbound: trains.filter(t => t.directionId === 0),
+    inbound: trains.filter(t => t.directionId === 0),
+    outbound: trains.filter(t => t.directionId === 1),
   }
 }
 
