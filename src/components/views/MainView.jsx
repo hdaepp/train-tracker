@@ -1,5 +1,14 @@
 import TrainCard from '../TrainCard'
 
+const MAX_TRAINS = 5
+
+function upcomingTrains(trains) {
+  const now = new Date()
+  return trains
+    .filter(t => (t.predictedTime || t.scheduledTime) > now)
+    .slice(0, MAX_TRAINS)
+}
+
 function Section({ title, trains }) {
   return (
     <div className="section">
@@ -22,8 +31,8 @@ export default function MainView({ inbound, outbound }) {
         <span className="legend-item dispatched">Dispatched (live)</span>
         <span className="legend-item planned">Scheduled only</span>
       </div>
-      <Section title="Inbound → Downtown" trains={inbound} />
-      <Section title="Outbound → Medford/Tufts" trains={outbound} />
+      <Section title="Inbound → Downtown" trains={upcomingTrains(inbound)} />
+      <Section title="Outbound → Medford/Tufts" trains={upcomingTrains(outbound)} />
     </div>
   )
 }
