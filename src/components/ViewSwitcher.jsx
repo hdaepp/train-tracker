@@ -1,7 +1,6 @@
 export default function ViewSwitcher({ activeView, onViewChange }) {
   const views = [
     { id: 'main', label: 'Live' },
-    { id: 'planned', label: 'Schedule' },
     { id: 'details', label: 'Details' },
   ]
 

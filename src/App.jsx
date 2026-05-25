@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useMBTA } from './hooks/useMBTA'
 import ViewSwitcher from './components/ViewSwitcher'
 import MainView from './components/views/MainView'
-import PlannedView from './components/views/PlannedView'
 import DetailsView from './components/views/DetailsView'
 import { formatTime } from './utils/mbta'
 import './App.css'
@@ -32,7 +31,6 @@ export default function App() {
         ) : (
           <>
             {view === 'main' && <MainView inbound={inbound} outbound={outbound} />}
-            {view === 'planned' && <PlannedView inbound={inbound} outbound={outbound} />}
             {view === 'details' && <DetailsView inbound={inbound} outbound={outbound} />}
           </>
         )}
