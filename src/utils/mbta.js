@@ -45,11 +45,7 @@ export async function fetchPredictions(stopId) {
 }
 
 export async function fetchSchedules(stopId) {
-  const now = new Date()
-  const minTime = now.toTimeString().slice(0, 8)
-  const later = new Date(now.getTime() + 3 * 60 * 60 * 1000)
-  const maxTime = later.toTimeString().slice(0, 8)
-  const url = `${BASE}/schedules?filter[stop]=${stopId}&filter[route]=${ROUTE_ID}&filter[min_time]=${minTime}&filter[max_time]=${maxTime}&include=trip${authParam()}`
+  const url = `${BASE}/schedules?filter[stop]=${stopId}&filter[route]=${ROUTE_ID}&filter[min_time]=04:00:00&include=trip${authParam()}`
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Schedules fetch failed: ${res.status}`)
   return res.json()

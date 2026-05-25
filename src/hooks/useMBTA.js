@@ -66,6 +66,7 @@ function mergeTripData(schedulesJson, predictionsJson, vehiclesJson) {
       isStaged,
       vehicle,
       headsign: tripData?.attributes?.headsign || '',
+      blockId: tripData?.attributes?.block_id || null,
     })
   })
 

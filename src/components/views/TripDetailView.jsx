@@ -1,13 +1,7 @@
 import { useRef, useEffect } from 'react'
 import { useTripDetail } from '../../hooks/useTripDetail'
 import { formatTime } from '../../utils/mbta'
-
-function deltaLabel(scheduledTime, predictedTime) {
-  if (!predictedTime) return { text: '—', cls: 'neutral' }
-  const diffMins = Math.round((predictedTime - scheduledTime) / 60000)
-  if (diffMins <= 0) return { text: 'On time', cls: 'ontime' }
-  return { text: `+${diffMins} min`, cls: 'late' }
-}
+import { deltaLabel } from '../../utils/format'
 
 function statusBadge(train) {
   if (!train) return null
