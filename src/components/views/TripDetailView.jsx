@@ -62,7 +62,7 @@ export default function TripDetailView({ tripId, train, selectedStopId, onBack }
         <button className="trip-back-btn" onClick={onBack}>← Back</button>
         <div className="trip-detail-title">
           <span className="trip-headsign">{train?.headsign || 'Green Line E'}</span>
-          <span className="trip-sched-at-station">{scheduledAtSelected} at your station</span>
+          <span className="trip-id">{tripId}</span>
         </div>
         {statusBadge(train)}
       </div>
