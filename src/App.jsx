@@ -35,6 +35,14 @@ export default function App() {
     ? allTrains.find(t => t.id === selectedTripId) ?? null
     : null
 
+  const blockActiveTripId = selectedTrain?.blockId
+    ? (allTrains.find(t =>
+        t.blockId === selectedTrain.blockId &&
+        t.id !== selectedTripId &&
+        (t.isDispatched || t.isStaged)
+      )?.id ?? null)
+    : null
+
   function handleBack() {
     setSelectedTripId(null)
   }
@@ -75,6 +83,8 @@ export default function App() {
             train={selectedTrain}
             selectedStopId={stationId}
             onBack={handleBack}
+            onSelect={setSelectedTripId}
+            blockActiveTripId={blockActiveTripId}
           />
         ) : loading && !lastUpdated ? (
           <div className="loading">Loading…</div>

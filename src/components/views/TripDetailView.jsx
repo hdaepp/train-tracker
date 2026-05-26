@@ -35,7 +35,7 @@ function StopRow({ stop }) {
   )
 }
 
-export default function TripDetailView({ tripId, train, selectedStopId, onBack }) {
+export default function TripDetailView({ tripId, train, selectedStopId, onBack, onSelect, blockActiveTripId }) {
   const vehicleStopId = train?.vehicle?.stopId ?? null
   const { stops, loading, error } = useTripDetail(tripId, selectedStopId, vehicleStopId)
   const selectedRef = useRef(null)
@@ -56,7 +56,17 @@ export default function TripDetailView({ tripId, train, selectedStopId, onBack }
         <button className="trip-back-btn" onClick={onBack}>← Back</button>
         <div className="trip-detail-title">
           <span className="trip-headsign">{train?.headsign || 'Green Line E'}</span>
-          <span className="trip-id">Trip ID: {tripId}{train?.blockId ? ` | Block: ${train.blockId}` : ''}</span>
+          <span className="trip-id">Trip ID: {tripId}</span>
+          {train?.blockId && (
+            <span className="trip-id">
+              Block: {train.blockId}
+              {blockActiveTripId && onSelect && (
+                <button className="trip-where-link" onClick={() => onSelect(blockActiveTripId)}>
+                  {' '}(Where is my train?)
+                </button>
+              )}
+            </span>
+          )}
         </div>
         {statusBadge(train)}
       </div>
