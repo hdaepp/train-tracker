@@ -7,7 +7,7 @@ A personal real-time tracker for the MBTA Green Line E branch, deployed at
 
 ## Why I built this
 
-My usual station is Magoun Square, which is the third stop from the Medford/Tufts terminus. The MBTA doesn't publish live predictions for a trip until the train is dispatched — meaning actively en route and reporting location. For inbound trains at Magoun Square, that only happens about two minutes before the train arrives, which is too late to be useful.
+I regularly go to stops near the end of the green line (Medford/Tufts, Ball Square, Magoun, Gilman, etc.). The MBTA doesn't publish live predictions for a trip until the train is dispatched — meaning actively en route and reporting location. For inbound trains at these stations, that happens less than three minutes before the train arrives, which is too late to be useful.
 
 The MBTA v3 API, however, exposes a lot more than just predictions. It publishes the full daily schedule, real-time vehicle positions and assignments, and trip-to-vehicle relationships. Piecing that data together makes it possible to answer questions the official app can't: *Is there a train sitting at the terminus right now that's assigned to my next trip? What block is it running today? Is it running late on its previous trip?*
 
