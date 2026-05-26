@@ -56,7 +56,7 @@ export default function TripDetailView({ tripId, train, selectedStopId, onBack }
         <button className="trip-back-btn" onClick={onBack}>← Back</button>
         <div className="trip-detail-title">
           <span className="trip-headsign">{train?.headsign || 'Green Line E'}</span>
-          <span className="trip-id">Trip ID: {tripId}</span>
+          <span className="trip-id">Trip ID: {tripId}{train?.blockId ? ` | Block: ${train.blockId}` : ''}</span>
         </div>
         {statusBadge(train)}
       </div>
