@@ -35,7 +35,7 @@ function StopRow({ stop }) {
   )
 }
 
-export default function TripDetailView({ tripId, train, selectedStopId, onBack, onSelect, blockActiveTripId }) {
+export default function TripDetailView({ tripId, train, selectedStopId, onBack, onSelect, onSelectBlock, blockActiveTripId }) {
   const vehicleStopId = train?.vehicle?.stopId ?? null
   const { stops, loading, error } = useTripDetail(tripId, selectedStopId, vehicleStopId)
   const selectedRef = useRef(null)
@@ -59,7 +59,10 @@ export default function TripDetailView({ tripId, train, selectedStopId, onBack, 
           <span className="trip-id">Trip ID: {tripId}</span>
           {train?.blockId && (
             <span className="trip-id">
-              Block: {train.blockId}
+              Block:{' '}
+              <button className="trip-block-link" onClick={() => onSelectBlock?.(train.blockId)}>
+                {train.blockId}
+              </button>
               {blockActiveTripId && onSelect && (
                 <button className="trip-where-link" onClick={() => onSelect(blockActiveTripId)}>
                   {' '}(Where is my train?)

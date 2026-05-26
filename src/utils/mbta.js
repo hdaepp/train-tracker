@@ -58,6 +58,13 @@ export async function fetchVehicles() {
   return res.json()
 }
 
+export async function fetchBlockSchedules(tripIds) {
+  const url = `${BASE}/schedules?filter[trip]=${tripIds.join(',')}&include=stop${authParam()}`
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`Block schedules fetch failed: ${res.status}`)
+  return res.json()
+}
+
 export async function fetchTripSchedules(tripId) {
   const url = `${BASE}/schedules?filter[trip]=${tripId}&include=stop${authParam()}`
   const res = await fetch(url)

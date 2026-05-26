@@ -7,11 +7,13 @@ import HamburgerMenu from './components/HamburgerMenu'
 import MainView from './components/views/MainView'
 import DetailsView from './components/views/DetailsView'
 import TripDetailView from './components/views/TripDetailView'
+import BlockView from './components/views/BlockView'
 import { formatTime, STATIONS } from './utils/mbta'
 import './App.css'
 
 export default function App() {
   const [view, setView] = useState('main')
+  const [selectedBlockId, setSelectedBlockId] = useState(null)
   const [selectedTripId, setSelectedTripId] = useState(() => {
     const params = new URLSearchParams(window.location.search)
     return params.get('trip') || null
@@ -34,6 +36,10 @@ export default function App() {
   const selectedTrain = selectedTripId
     ? allTrains.find(t => t.id === selectedTripId) ?? null
     : null
+
+  const blockTrips = selectedBlockId
+    ? allTrains.filter(t => t.blockId === selectedBlockId)
+    : []
 
   const blockActiveTripId = selectedTrain?.blockId
     ? (allTrains.find(t =>
@@ -72,18 +78,27 @@ export default function App() {
           Green Line E ·{' '}
           {lastUpdated ? `Updated ${formatTime(lastUpdated)}` : 'Loading…'}
         </div>
-        {!selectedTripId && <ViewSwitcher activeView={view} onViewChange={setView} />}
+        {!selectedTripId && !selectedBlockId && <ViewSwitcher activeView={view} onViewChange={setView} />}
       </header>
 
       <main className="app-body">
         {error && <div className="error-banner">Error: {error}</div>}
-        {selectedTripId ? (
+        {selectedBlockId ? (
+          <BlockView
+            blockId={selectedBlockId}
+            blockTrips={blockTrips}
+            currentTripId={selectedTripId}
+            onBack={() => setSelectedBlockId(null)}
+            onSelectTrip={(tripId) => { setSelectedBlockId(null); setSelectedTripId(tripId) }}
+          />
+        ) : selectedTripId ? (
           <TripDetailView
             tripId={selectedTripId}
             train={selectedTrain}
             selectedStopId={stationId}
             onBack={handleBack}
             onSelect={setSelectedTripId}
+            onSelectBlock={setSelectedBlockId}
             blockActiveTripId={blockActiveTripId}
           />
         ) : loading && !lastUpdated ? (
