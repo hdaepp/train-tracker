@@ -48,7 +48,7 @@ src/
     mbta.js                   # All MBTA API fetch functions, STATIONS list, time helpers
     format.js                 # Shared pure utilities (deltaLabel)
   components/
-    ViewSwitcher.jsx           # Live / Details tab bar
+    ViewSwitcher.jsx           # Live / Details / Status tab bar
     TrainCard.jsx              # Single train card in the Live view
     HamburgerMenu.jsx          # Layout override dropdown
     views/
@@ -56,6 +56,7 @@ src/
       DetailsView.jsx          # Debug: full-day trip table with block and vehicle info
       TripDetailView.jsx       # Stop-by-stop itinerary for a selected trip
       BlockView.jsx            # All trips in a vehicle's block for the day
+      StatusView.jsx           # API health: response counts, ADDED-trip counts, per-direction breakdown
 ```
 
 ---
@@ -82,7 +83,24 @@ Three endpoints are fetched in parallel on every poll:
 - **`/predictions?filter[stop]=…`** — live arrival estimates. These only exist for trips that are currently dispatched (a vehicle is en route). Includes the trip and vehicle in the `included` payload.
 - **`/vehicles?filter[route]=Green-E`** — all vehicles currently on the line, each with its current trip ID, current stop, and status (`STOPPED_AT` / `IN_TRANSIT_TO`).
 
-These are merged by trip ID: for each scheduled trip, the hook attaches a prediction (if one exists) and a vehicle (if one is assigned). The result is the three-tier status model above.
+These are merged by trip ID in two passes. First, every scheduled trip gets a prediction and/or vehicle attached if one exists. Second, any predictions or vehicles whose trip ID didn't appear in the schedule are added as standalone trains — these are **ADDED trips** (see below).
+
+### Train source types and current support
+
+The MBTA API can produce several distinct combinations of schedule, prediction, and vehicle data. Not all are handled yet:
+
+| Source | Has schedule entry | Has prediction | Has vehicle | Status shown | Supported |
+|---|---|---|---|---|---|
+| Scheduled | ✓ | — | — | Scheduled | ✓ |
+| Staged | ✓ | — | ✓ | Staged | ✓ |
+| Dispatched | ✓ | ✓ | ✓ | Dispatched | ✓ |
+| ADDED dispatched | — | ✓ | ✓ | Dispatched | ✓ |
+| ADDED staged | — | — | ✓ | Staged | ✓ |
+| Cancelled | ✓ | — | — | *(shows as Scheduled — false positive)* | ✗ |
+| Skipped stop | ✓ | `SKIPPED` | — | *(shows as Scheduled — false positive)* | ✗ |
+| Non-revenue (deadhead) | ✓ (`NON_REVENUE`) | — | — | *(shows as Scheduled — false positive)* | ✗ |
+
+**ADDED trips** are real-time-only trips the MBTA creates dynamically when running service outside the published timetable — common on the Green Line E. They carry an `ADDED-*` trip ID and have no corresponding schedule entry. The Status tab shows how many ADDED trips are active on the current refresh.
 
 ### Block IDs — tracing a vehicle across the day
 
