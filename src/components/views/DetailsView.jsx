@@ -11,7 +11,7 @@ function statusInfo(train) {
 function DebugRow({ train, onSelect }) {
   const delta = deltaLabel(train.scheduledTime, train.predictedTime)
   const status = statusInfo(train)
-  const isPast = !train.predictedTime && train.scheduledTime < new Date()
+  const isPast = !train.predictedTime && !!train.scheduledTime && train.scheduledTime < new Date()
 
   return (
     <div
@@ -34,7 +34,7 @@ function DebugRow({ train, onSelect }) {
 
 function DebugSection({ title, trains, nowRef, onSelect }) {
   const now = new Date()
-  const anchorIndex = trains.findIndex(t => t.scheduledTime >= now)
+  const anchorIndex = trains.findIndex(t => (t.predictedTime || t.scheduledTime) >= now)
   const effectiveAnchor = anchorIndex !== -1 ? anchorIndex : trains.length - 1
 
   return (

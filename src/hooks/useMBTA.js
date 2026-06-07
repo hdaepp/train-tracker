@@ -3,7 +3,7 @@ import { fetchPredictions, fetchSchedules, fetchVehicles, parseTime } from '../u
 
 const POLL_INTERVAL = 30000
 
-function mergeTripData(schedulesJson, predictionsJson, vehiclesJson) {
+export function mergeTripData(schedulesJson, predictionsJson, vehiclesJson) {
   const included = [
     ...(schedulesJson.included || []),
     ...(predictionsJson.included || []),
@@ -70,6 +70,57 @@ function mergeTripData(schedulesJson, predictionsJson, vehiclesJson) {
     })
   })
 
+  // ADDED dispatched: predictions whose trip IDs aren't in the static schedule
+  ;(predictionsJson.data || []).forEach(p => {
+    const tripId = p.relationships?.trip?.data?.id
+    if (!tripId || seenTrips.has(tripId)) return
+    seenTrips.add(tripId)
+
+    const vehicle = vehicleByTrip[tripId] || null
+    const tripData = tripMap[tripId] || null
+    const predictedTime = parseTime(p.attributes.departure_time || p.attributes.arrival_time)
+
+    trains.push({
+      id: tripId,
+      directionId: tripData?.attributes?.direction_id ?? null,
+      scheduledTime: null,
+      predictedTime,
+      isDispatched: true,
+      isStaged: false,
+      vehicle,
+      headsign: tripData?.attributes?.headsign || '',
+      blockId: tripData?.attributes?.block_id || null,
+    })
+  })
+
+  // ADDED staged: vehicles on ADDED trips with no prediction yet
+  ;(vehiclesJson.data || []).forEach(v => {
+    const tripId = v.relationships?.trip?.data?.id
+    if (!tripId || seenTrips.has(tripId)) return
+    seenTrips.add(tripId)
+
+    const tripData = tripMap[tripId] || null
+    const stopId = v.relationships?.stop?.data?.id
+    const vehicle = {
+      status: v.attributes.current_status,
+      stopName: stopMap[stopId]?.attributes?.name || stopId,
+      stopId,
+      label: v.attributes.label,
+    }
+
+    trains.push({
+      id: tripId,
+      directionId: tripData?.attributes?.direction_id ?? null,
+      scheduledTime: null,
+      predictedTime: null,
+      isDispatched: false,
+      isStaged: true,
+      vehicle,
+      headsign: tripData?.attributes?.headsign || '',
+      blockId: tripData?.attributes?.block_id || null,
+    })
+  })
+
   trains.sort((a, b) => {
     const ta = a.predictedTime || a.scheduledTime
     const tb = b.predictedTime || b.scheduledTime
@@ -87,6 +138,7 @@ export function useMBTA(stopId) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [lastUpdated, setLastUpdated] = useState(null)
+  const [stats, setStats] = useState(null)
 
   const refresh = useCallback(async () => {
     try {
@@ -95,6 +147,22 @@ export function useMBTA(stopId) {
         fetchPredictions(stopId),
         fetchVehicles(),
       ])
+
+      const addedVehicleCount = (vehicles.data || []).filter(v =>
+        v.relationships?.trip?.data?.id?.startsWith('ADDED-')
+      ).length
+      const addedPredictionCount = (predictions.data || []).filter(p =>
+        p.relationships?.trip?.data?.id?.startsWith('ADDED-')
+      ).length
+
+      setStats({
+        schedulesCount: schedules.data?.length ?? 0,
+        predictionsCount: predictions.data?.length ?? 0,
+        vehiclesCount: vehicles.data?.length ?? 0,
+        addedVehicleCount,
+        addedPredictionCount,
+      })
+
       setData(mergeTripData(schedules, predictions, vehicles))
       setLastUpdated(new Date())
       setError(null)
@@ -113,5 +181,5 @@ export function useMBTA(stopId) {
     return () => clearInterval(interval)
   }, [refresh])
 
-  return { ...data, loading, error, lastUpdated, refresh }
+  return { ...data, loading, error, lastUpdated, refresh, stats }
 }

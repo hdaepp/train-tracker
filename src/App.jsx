@@ -8,6 +8,7 @@ import MainView from './components/views/MainView'
 import DetailsView from './components/views/DetailsView'
 import TripDetailView from './components/views/TripDetailView'
 import BlockView from './components/views/BlockView'
+import StatusView from './components/views/StatusView'
 import { formatTime, STATIONS } from './utils/mbta'
 import './App.css'
 
@@ -19,7 +20,7 @@ export default function App() {
     return params.get('trip') || null
   })
   const { stationId, setStation } = useStation()
-  const { inbound, outbound, loading, error, lastUpdated, refresh } = useMBTA(stationId)
+  const { inbound, outbound, loading, error, lastUpdated, refresh, stats } = useMBTA(stationId)
   const { layoutClass, pref, setPref } = useLayout()
 
   useEffect(() => {
@@ -110,6 +111,15 @@ export default function App() {
             )}
             {view === 'details' && (
               <DetailsView inbound={inbound} outbound={outbound} onSelect={setSelectedTripId} />
+            )}
+            {view === 'status' && (
+              <StatusView
+                stats={stats}
+                inbound={inbound}
+                outbound={outbound}
+                error={error}
+                lastUpdated={lastUpdated}
+              />
             )}
           </>
         )}

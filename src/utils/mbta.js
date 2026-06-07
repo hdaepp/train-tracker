@@ -52,7 +52,7 @@ export async function fetchSchedules(stopId) {
 }
 
 export async function fetchVehicles() {
-  const url = `${BASE}/vehicles?filter[route]=${ROUTE_ID}&include=stop${authParam()}`
+  const url = `${BASE}/vehicles?filter[route]=${ROUTE_ID}&include=stop,trip${authParam()}`
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Vehicles fetch failed: ${res.status}`)
   return res.json()
