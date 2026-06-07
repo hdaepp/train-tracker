@@ -6,6 +6,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [2026-06-01]
+
+### Added
+- Surface ADDED-trip trains (real-time-only trips with no published schedule entry) as Dispatched or Staged — fixes the bug where all trains showed as Scheduled when MBTA was running added service
+- Status tab showing raw API response counts, ADDED-trip counts, and per-direction dispatched/staged/scheduled breakdown for at-a-glance debugging
+- 9 unit tests for `mergeTripData` covering all train source type combinations (scheduled, staged, dispatched, ADDED dispatched, ADDED staged, deduplication, direction splitting)
+
+### Changed
+- `fetchVehicles` now includes trip data (`include=stop,trip`) so ADDED-staged trains have headsign and direction available
+- `mergeTripData` exported for testability
+- DetailsView `isPast` and anchor logic made null-safe for trains without a `scheduledTime`
+- README: added train source type support table and documented ADDED-trip behaviour
+- CLAUDE.md created with project rules for changelog, readme, and test coverage
+
 ## [2026-05-26]
 
 ### Added
